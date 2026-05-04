@@ -133,3 +133,9 @@ Current backend endpoints:
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
 - `GET /api/v1/auth/me`
+- `POST /api/v1/profiles/candidate/me`
+- `GET /api/v1/profiles/candidate/me`
+- `PATCH /api/v1/profiles/candidate/me`
+- `POST /api/v1/profiles/employer/me`
+- `GET /api/v1/profiles/employer/me`
+- `PATCH /api/v1/profiles/employer/me`

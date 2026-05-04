@@ -1,3 +1,21 @@
+from app.schemas.profile import (
+    CandidateProfileCreate,
+    CandidateProfileRead,
+    CandidateProfileUpdate,
+    EmployerProfileCreate,
+    EmployerProfileRead,
+    EmployerProfileUpdate,
+)
 from app.schemas.user import UserCreate, UserRead, UserUpdate
 
-__all__ = ["UserCreate", "UserRead", "UserUpdate"]
+__all__ = [
+    "CandidateProfileCreate",
+    "CandidateProfileRead",
+    "CandidateProfileUpdate",
+    "EmployerProfileCreate",
+    "EmployerProfileRead",
+    "EmployerProfileUpdate",
+    "UserCreate",
+    "UserRead",
+    "UserUpdate",
+]
