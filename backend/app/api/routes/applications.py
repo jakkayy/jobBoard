@@ -15,6 +15,7 @@ from app.models.job import JobStatus
 from app.models.user import UserRole
 from app.schemas.application import ApplicationCreate, ApplicationList, ApplicationRead, ApplicationUpdate
 from app.services.email import send_application_received_email, send_application_status_email
+from app.services.notifications import notify_application_received, notify_application_status_updated
 
 router = APIRouter(tags=["applications"])
 
@@ -48,6 +49,7 @@ def apply_to_job(
     if existing_application is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Already applied to this job")
     application = create_application(db, job_id, current_user.id, application_in)
+    notify_application_received(db, job.employer_id, job.title, current_user.email)
     send_application_received_email(job.employer.email, job.title, current_user.email)
     return application
 
@@ -88,5 +90,6 @@ def update_application_status(
     if job.employer_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Job owner required")
     updated_application = update_application(db, application, application_in)
+    notify_application_status_updated(db, application.candidate_id, job.title, updated_application.status.value)
     send_application_status_email(application.candidate.email, job.title, updated_application.status.value)
     return updated_application

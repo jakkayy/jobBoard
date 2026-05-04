@@ -49,7 +49,7 @@ export function CandidateShell() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-4">
       <a href="/candidate/profile" className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md">
         <div className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">Profile</div>
         <div className="mt-3 text-2xl font-black text-slate-950">Edit your profile</div>
@@ -64,6 +64,11 @@ export function CandidateShell() {
         <div className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">Jobs</div>
         <div className="mt-3 text-2xl font-black text-slate-950">Browse jobs</div>
         <p className="mt-2 text-sm leading-6 text-slate-600">Find new roles and submit an application.</p>
+      </a>
+      <a href="/notifications" className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md">
+        <div className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">Activity</div>
+        <div className="mt-3 text-2xl font-black text-slate-950">Notifications</div>
+        <p className="mt-2 text-sm leading-6 text-slate-600">Track updates about your applications.</p>
       </a>
     </div>
   );

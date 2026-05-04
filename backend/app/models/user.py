@@ -10,6 +10,7 @@ from app.db.base import Base
 if TYPE_CHECKING:
     from app.models.application import Application
     from app.models.job import Job
+    from app.models.notification import Notification
     from app.models.profile import CandidateProfile, EmployerProfile
 
 
@@ -53,4 +54,7 @@ class User(Base):
     )
     applications: Mapped[list["Application"]] = relationship(
         "Application", back_populates="candidate", cascade="all, delete-orphan"
+    )
+    notifications: Mapped[list["Notification"]] = relationship(
+        "Notification", back_populates="user", cascade="all, delete-orphan"
     )

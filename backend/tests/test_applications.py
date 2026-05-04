@@ -88,5 +88,21 @@ def test_candidate_can_apply_and_employer_can_manage_application() -> None:
     assert update_response.status_code == 200
     assert update_response.json()["status"] == "reviewing"
 
+    employer_notifications_response = client.get("/api/v1/notifications", headers=employer_headers)
+    candidate_notifications_response = client.get("/api/v1/notifications", headers=candidate_headers)
+
+    assert employer_notifications_response.status_code == 200
+    assert employer_notifications_response.json()["total"] == 1
+    assert employer_notifications_response.json()["unread_count"] == 1
+    assert candidate_notifications_response.status_code == 200
+    assert candidate_notifications_response.json()["total"] == 1
+    assert candidate_notifications_response.json()["unread_count"] == 1
+
+    mark_read_response = client.post("/api/v1/notifications/mark-read", headers=candidate_headers)
+    updated_candidate_notifications_response = client.get("/api/v1/notifications", headers=candidate_headers)
+
+    assert mark_read_response.status_code == 204
+    assert updated_candidate_notifications_response.json()["unread_count"] == 0
+
     app.dependency_overrides.clear()
     Base.metadata.drop_all(bind=engine)

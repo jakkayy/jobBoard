@@ -1,5 +1,6 @@
 from app.schemas.application import ApplicationCreate, ApplicationList, ApplicationRead, ApplicationUpdate
 from app.schemas.job import JobCreate, JobList, JobRead, JobUpdate
+from app.schemas.notification import NotificationCreate, NotificationList, NotificationRead
 from app.schemas.profile import (
     CandidateProfileCreate,
     CandidateProfileRead,
@@ -25,6 +26,9 @@ __all__ = [
     "JobList",
     "JobRead",
     "JobUpdate",
+    "NotificationCreate",
+    "NotificationList",
+    "NotificationRead",
     "UserCreate",
     "UserRead",
     "UserUpdate",
