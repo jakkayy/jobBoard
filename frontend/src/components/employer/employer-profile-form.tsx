@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 
 import { getStoredToken } from "@/lib/auth-token";
 import { createEmployerProfile, getEmployerProfile, updateEmployerProfile } from "@/lib/employer-api";
+import { FileUploadField } from "@/components/upload/file-upload-field";
 
 export function EmployerProfileForm() {
   const [companyName, setCompanyName] = useState("");
@@ -69,6 +70,7 @@ export function EmployerProfileForm() {
       <input value={companyName} onChange={(event) => setCompanyName(event.target.value)} placeholder="Company name" className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500" />
       <input value={companyWebsite} onChange={(event) => setCompanyWebsite(event.target.value)} placeholder="Company website" className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500" />
       <input value={logoUrl} onChange={(event) => setLogoUrl(event.target.value)} placeholder="Logo URL" className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500" />
+      <FileUploadField label="Upload company logo" uploadType="company-logo" accept="image/jpeg,image/png,image/webp" onUploaded={setLogoUrl} />
       <textarea value={companyDescription} onChange={(event) => setCompanyDescription(event.target.value)} placeholder="Company description" rows={6} className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500" />
       {message ? <p className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">{message}</p> : null}
       {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p> : null}

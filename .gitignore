@@ -39,3 +39,4 @@ pnpm-debug.log*
 # Docker/database
 postgres_data/
 redis_data/
+backend/uploads/

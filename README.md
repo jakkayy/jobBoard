@@ -154,6 +154,7 @@ Current backend endpoints:
 - `GET /api/v1/me/applications`
 - `GET /api/v1/employer/jobs/{job_id}/applications`
 - `PATCH /api/v1/applications/{application_id}`
+- `POST /api/v1/uploads/{upload_type}`
 - `POST /api/v1/profiles/candidate/me`
 - `GET /api/v1/profiles/candidate/me`
 - `PATCH /api/v1/profiles/candidate/me`
@@ -178,6 +179,7 @@ The frontend is a Next.js App Router application.
 - Candidate API client: `frontend/src/lib/candidate-api.ts`
 - Employer API client: `frontend/src/lib/employer-api.ts`
 - Job API client: `frontend/src/lib/job-api.ts`
+- Upload API client: `frontend/src/lib/upload-api.ts`
 - Types: `frontend/src/types`
 - Local env example: `frontend/.env.local.example`
 

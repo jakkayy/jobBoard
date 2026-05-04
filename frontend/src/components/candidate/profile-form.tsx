@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 
 import { getStoredToken } from "@/lib/auth-token";
 import { createCandidateProfile, getCandidateProfile, updateCandidateProfile } from "@/lib/candidate-api";
+import { FileUploadField } from "@/components/upload/file-upload-field";
 
 export function CandidateProfileForm() {
   const [fullName, setFullName] = useState("");
@@ -76,6 +77,7 @@ export function CandidateProfileForm() {
       </div>
       <input value={skills} onChange={(event) => setSkills(event.target.value)} placeholder="Skills e.g. React, FastAPI" className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500" />
       <input value={cvUrl} onChange={(event) => setCvUrl(event.target.value)} placeholder="CV URL" className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500" />
+      <FileUploadField label="Upload CV PDF" uploadType="cv" accept="application/pdf" onUploaded={setCvUrl} />
       <textarea value={bio} onChange={(event) => setBio(event.target.value)} placeholder="Short bio" rows={5} className="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500" />
       {message ? <p className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">{message}</p> : null}
       {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p> : null}
