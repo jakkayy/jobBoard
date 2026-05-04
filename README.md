@@ -20,6 +20,7 @@ jobBoard/
 ├── infra/
 ├── .github/
 │   └── workflows/
+├── docker-compose.yml
 ├── .env.example
 ├── .gitignore
 └── README.md
@@ -40,4 +41,41 @@ jobBoard/
 
 ## Getting Started
 
-Setup instructions will be added as each phase is completed.
+Copy the example environment file before starting local services.
+
+```bash
+cp .env.example .env
+```
+
+Start local infrastructure.
+
+```bash
+docker compose up -d postgres redis
+```
+
+Check running services.
+
+```bash
+docker compose ps
+```
+
+Stop local infrastructure.
+
+```bash
+docker compose down
+```
+
+Stop local infrastructure and remove volumes.
+
+```bash
+docker compose down -v
+```
+
+## Local Infrastructure
+
+The local infrastructure includes:
+
+- PostgreSQL on port `5432`
+- Redis on port `6379`
+
+Default PostgreSQL credentials are defined in `.env.example`.
