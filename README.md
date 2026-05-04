@@ -138,6 +138,10 @@ Current backend endpoints:
 - `POST /api/v1/jobs`
 - `PATCH /api/v1/jobs/{job_id}`
 - `DELETE /api/v1/jobs/{job_id}`
+- `POST /api/v1/jobs/{job_id}/apply`
+- `GET /api/v1/me/applications`
+- `GET /api/v1/employer/jobs/{job_id}/applications`
+- `PATCH /api/v1/applications/{application_id}`
 - `POST /api/v1/profiles/candidate/me`
 - `GET /api/v1/profiles/candidate/me`
 - `PATCH /api/v1/profiles/candidate/me`
