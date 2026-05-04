@@ -1,6 +1,8 @@
 from app.crud.application import (
+    count_applications,
     count_job_applications,
     create_application,
+    get_applications,
     get_application_by_id,
     get_application_by_job_and_candidate,
     get_candidate_applications,
@@ -23,9 +25,10 @@ from app.crud.profile import (
     update_candidate_profile,
     update_employer_profile,
 )
-from app.crud.user import create_user, get_user_by_email, get_user_by_id
+from app.crud.user import count_users, create_user, get_user_by_email, get_user_by_id, get_users, update_user
 
 __all__ = [
+    "count_applications",
     "count_job_applications",
     "count_jobs",
     "count_unread_user_notifications",
@@ -37,6 +40,7 @@ __all__ = [
     "create_notification",
     "create_user",
     "delete_job",
+    "get_applications",
     "get_application_by_id",
     "get_application_by_job_and_candidate",
     "get_candidate_applications",
@@ -48,9 +52,11 @@ __all__ = [
     "get_user_notifications",
     "get_user_by_email",
     "get_user_by_id",
+    "get_users",
     "update_application",
     "update_candidate_profile",
     "update_employer_profile",
     "update_job",
+    "update_user",
     "mark_user_notifications_read",
 ]

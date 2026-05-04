@@ -29,6 +29,15 @@ def get_candidate_applications(db: Session, candidate_id: int) -> list[Applicati
     return list(db.scalars(statement).all())
 
 
+def get_applications(db: Session, skip: int = 0, limit: int = 50) -> list[Application]:
+    statement = select(Application).order_by(Application.created_at.desc()).offset(skip).limit(limit)
+    return list(db.scalars(statement).all())
+
+
+def count_applications(db: Session) -> int:
+    return db.scalar(select(func.count()).select_from(Application)) or 0
+
+
 def build_job_applications_query(job_id: int) -> Select[tuple[Application]]:
     return select(Application).where(Application.job_id == job_id)
 

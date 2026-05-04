@@ -145,6 +145,11 @@ Current backend endpoints:
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
 - `GET /api/v1/auth/me`
+- `GET /api/v1/admin/users`
+- `PATCH /api/v1/admin/users/{user_id}`
+- `GET /api/v1/admin/jobs`
+- `PATCH /api/v1/admin/jobs/{job_id}`
+- `GET /api/v1/admin/applications`
 - `GET /api/v1/jobs`
 - `GET /api/v1/jobs/{job_id}`
 - `POST /api/v1/jobs`
@@ -177,6 +182,7 @@ The frontend is a Next.js App Router application.
 - App directory: `frontend/src/app`
 - API client: `frontend/src/lib/api.ts`
 - Auth API client: `frontend/src/lib/auth-api.ts`
+- Admin API client: `frontend/src/lib/admin-api.ts`
 - Auth token storage: `frontend/src/lib/auth-token.ts`
 - Candidate API client: `frontend/src/lib/candidate-api.ts`
 - Employer API client: `frontend/src/lib/employer-api.ts`
@@ -189,6 +195,7 @@ The frontend is a Next.js App Router application.
 Current frontend pages:
 
 - `/`
+- `/admin`
 - `/login`
 - `/register`
 - `/jobs`
