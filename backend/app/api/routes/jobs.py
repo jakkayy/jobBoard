@@ -1,9 +1,10 @@
 from fastapi import APIRouter, HTTPException, Query, Response, status
 
 from app.api.deps import CurrentUser, DbSession
-from app.crud.job import create_job, delete_job, get_job_by_id, get_jobs, update_job
+from app.crud.job import count_jobs, create_job, delete_job, get_job_by_id, get_jobs, update_job
+from app.models.job import EmploymentType, JobStatus
 from app.models.user import UserRole
-from app.schemas.job import JobCreate, JobRead, JobUpdate
+from app.schemas.job import JobCreate, JobList, JobRead, JobUpdate
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
 
@@ -18,13 +19,41 @@ def require_job_owner(job_employer_id: int, current_user: CurrentUser) -> None:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Job owner required")
 
 
-@router.get("", response_model=list[JobRead])
+@router.get("", response_model=JobList)
 def list_jobs(
     db: DbSession,
-    skip: int = Query(default=0, ge=0),
+    page: int = Query(default=1, ge=1),
     limit: int = Query(default=20, ge=1, le=100),
-) -> list[JobRead]:
-    return get_jobs(db, skip=skip, limit=limit)
+    keyword: str | None = Query(default=None, min_length=1),
+    location: str | None = Query(default=None, min_length=1),
+    employment_type: EmploymentType | None = None,
+    salary_min: int | None = Query(default=None, ge=0),
+    salary_max: int | None = Query(default=None, ge=0),
+    status_filter: JobStatus | None = Query(default=None, alias="status"),
+    sort: str = Query(default="newest", pattern="^(newest|oldest)$"),
+) -> JobList:
+    items = get_jobs(
+        db,
+        page=page,
+        limit=limit,
+        keyword=keyword,
+        location=location,
+        employment_type=employment_type,
+        salary_min=salary_min,
+        salary_max=salary_max,
+        status=status_filter,
+        sort=sort,
+    )
+    total = count_jobs(
+        db,
+        keyword=keyword,
+        location=location,
+        employment_type=employment_type,
+        salary_min=salary_min,
+        salary_max=salary_max,
+        status=status_filter,
+    )
+    return JobList(items=items, total=total, page=page, limit=limit)
 
 
 @router.get("/{job_id}", response_model=JobRead)

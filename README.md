@@ -144,3 +144,9 @@ Current backend endpoints:
 - `POST /api/v1/profiles/employer/me`
 - `GET /api/v1/profiles/employer/me`
 - `PATCH /api/v1/profiles/employer/me`
+
+Example job search query:
+
+```bash
+curl "http://localhost:8000/api/v1/jobs?keyword=FastAPI&location=Bangkok&employment_type=full_time&page=1&limit=10&sort=newest"
+```

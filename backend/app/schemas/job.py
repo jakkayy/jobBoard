@@ -52,3 +52,10 @@ class JobRead(JobBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class JobList(BaseModel):
+    items: list[JobRead]
+    total: int
+    page: int
+    limit: int

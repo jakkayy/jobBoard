@@ -74,3 +74,72 @@ def test_employer_can_create_update_and_delete_job() -> None:
 
     app.dependency_overrides.clear()
     Base.metadata.drop_all(bind=engine)
+
+
+def test_jobs_list_supports_search_filters_and_pagination() -> None:
+    Base.metadata.create_all(bind=engine)
+    app.dependency_overrides[get_db] = override_get_db
+    client = TestClient(app)
+
+    client.post(
+        "/api/v1/auth/register",
+        json={"email": "search-employer@example.com", "password": "password123", "role": "employer"},
+    )
+    login_response = client.post(
+        "/api/v1/auth/login",
+        data={"username": "search-employer@example.com", "password": "password123"},
+    )
+    headers = {"Authorization": f"Bearer {login_response.json()['access_token']}"}
+
+    client.post(
+        "/api/v1/jobs",
+        json={
+            "title": "Frontend Developer",
+            "description": "Build React interfaces",
+            "location": "Bangkok",
+            "employment_type": "full_time",
+            "salary_min": 40000,
+            "salary_max": 80000,
+            "skills_required": "React, TypeScript",
+            "status": "published",
+        },
+        headers=headers,
+    )
+    client.post(
+        "/api/v1/jobs",
+        json={
+            "title": "Backend Developer",
+            "description": "Build FastAPI services",
+            "location": "Chiang Mai",
+            "employment_type": "contract",
+            "salary_min": 60000,
+            "salary_max": 100000,
+            "skills_required": "Python, FastAPI",
+            "status": "published",
+        },
+        headers=headers,
+    )
+
+    response = client.get(
+        "/api/v1/jobs",
+        params={
+            "keyword": "FastAPI",
+            "location": "Chiang",
+            "employment_type": "contract",
+            "salary_min": 50000,
+            "salary_max": 120000,
+            "status": "published",
+            "page": 1,
+            "limit": 10,
+        },
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total"] == 1
+    assert data["page"] == 1
+    assert data["limit"] == 10
+    assert data["items"][0]["title"] == "Backend Developer"
+
+    app.dependency_overrides.clear()
+    Base.metadata.drop_all(bind=engine)
