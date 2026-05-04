@@ -23,3 +23,14 @@ export type JobList = {
   page: number;
   limit: number;
 };
+
+export type JobPayload = {
+  title: string;
+  description: string;
+  location?: string;
+  employment_type: EmploymentType;
+  salary_min?: number;
+  salary_max?: number;
+  skills_required?: string;
+  status: JobStatus;
+};
