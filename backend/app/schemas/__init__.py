@@ -1,3 +1,4 @@
+from app.schemas.job import JobCreate, JobRead, JobUpdate
 from app.schemas.profile import (
     CandidateProfileCreate,
     CandidateProfileRead,
@@ -15,6 +16,9 @@ __all__ = [
     "EmployerProfileCreate",
     "EmployerProfileRead",
     "EmployerProfileUpdate",
+    "JobCreate",
+    "JobRead",
+    "JobUpdate",
     "UserCreate",
     "UserRead",
     "UserUpdate",
