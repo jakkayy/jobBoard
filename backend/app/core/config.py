@@ -13,6 +13,10 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg://jobboard:jobboard@localhost:5432/jobboard"
     redis_url: str = "redis://localhost:6379/0"
 
+    jwt_secret: str = "change-me"
+    jwt_algorithm: str = "HS256"
+    jwt_access_token_expire_minutes: int = 30
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

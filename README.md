@@ -124,3 +124,12 @@ Backend migrations are managed with Alembic.
 - Migration config: `backend/alembic.ini`
 - Migration environment: `backend/migrations/env.py`
 - Migration versions: `backend/migrations/versions`
+
+## Backend API
+
+Current backend endpoints:
+
+- `GET /api/v1/health`
+- `POST /api/v1/auth/register`
+- `POST /api/v1/auth/login`
+- `GET /api/v1/auth/me`
