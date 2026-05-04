@@ -78,6 +78,18 @@ Open the backend health check.
 curl http://localhost:8000/api/v1/health
 ```
 
+Create a new database migration.
+
+```bash
+alembic -c backend/alembic.ini revision --autogenerate -m "describe changes"
+```
+
+Run database migrations.
+
+```bash
+alembic -c backend/alembic.ini upgrade head
+```
+
 Check running services.
 
 ```bash
@@ -104,3 +116,11 @@ The local infrastructure includes:
 - Redis on port `6379`
 
 Default PostgreSQL credentials are defined in `.env.example`.
+
+## Database Migrations
+
+Backend migrations are managed with Alembic.
+
+- Migration config: `backend/alembic.ini`
+- Migration environment: `backend/migrations/env.py`
+- Migration versions: `backend/migrations/versions`
