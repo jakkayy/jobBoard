@@ -175,6 +175,7 @@ The frontend is a Next.js App Router application.
 - API client: `frontend/src/lib/api.ts`
 - Auth API client: `frontend/src/lib/auth-api.ts`
 - Auth token storage: `frontend/src/lib/auth-token.ts`
+- Candidate API client: `frontend/src/lib/candidate-api.ts`
 - Job API client: `frontend/src/lib/job-api.ts`
 - Types: `frontend/src/types`
 - Local env example: `frontend/.env.local.example`
@@ -186,3 +187,6 @@ Current frontend pages:
 - `/register`
 - `/jobs`
 - `/jobs/[id]`
+- `/candidate/dashboard`
+- `/candidate/profile`
+- `/candidate/applications`

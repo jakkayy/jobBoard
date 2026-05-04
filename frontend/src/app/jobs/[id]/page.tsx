@@ -1,3 +1,4 @@
+import { ApplyBox } from "@/components/jobs/apply-box";
 import { getJob } from "@/lib/job-api";
 import { formatEmploymentType, formatSalary } from "@/lib/job-format";
 
@@ -45,18 +46,7 @@ export default async function JobDetailPage({ params }: Readonly<{ params: { id:
           </section>
         ) : null}
 
-        <section className="rounded-3xl bg-slate-950 p-8 text-white shadow-xl shadow-slate-300">
-          <h2 className="text-2xl font-black">Ready to apply?</h2>
-          <p className="mt-3 text-slate-300">
-            Sign in as a candidate to submit your application and track your status.
-          </p>
-          <a
-            href="/login"
-            className="mt-6 inline-flex rounded-full bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
-          >
-            Sign in to apply
-          </a>
-        </section>
+        <ApplyBox jobId={job.id} />
       </section>
     </main>
   );
