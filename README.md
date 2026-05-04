@@ -199,3 +199,12 @@ Current frontend pages:
 - `/employer/jobs/new`
 - `/employer/jobs/[id]/edit`
 - `/employer/jobs/[id]/applicants`
+
+## Email Notifications
+
+The backend sends email notifications for application workflow events:
+
+- Candidate applies to a job: notify the employer.
+- Employer updates application status: notify the candidate.
+
+In local development, if `SMTP_HOST` or `SMTP_FROM_EMAIL` is not configured, emails are skipped and logged to stdout instead of failing the request.

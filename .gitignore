@@ -22,6 +22,7 @@ out/
 dist/
 build/
 coverage/
+*.tsbuildinfo
 htmlcov/
 
 # Logs

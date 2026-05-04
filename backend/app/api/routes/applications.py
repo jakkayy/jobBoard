@@ -14,6 +14,7 @@ from app.crud.job import get_job_by_id
 from app.models.job import JobStatus
 from app.models.user import UserRole
 from app.schemas.application import ApplicationCreate, ApplicationList, ApplicationRead, ApplicationUpdate
+from app.services.email import send_application_received_email, send_application_status_email
 
 router = APIRouter(tags=["applications"])
 
@@ -46,7 +47,9 @@ def apply_to_job(
     existing_application = get_application_by_job_and_candidate(db, job_id, current_user.id)
     if existing_application is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Already applied to this job")
-    return create_application(db, job_id, current_user.id, application_in)
+    application = create_application(db, job_id, current_user.id, application_in)
+    send_application_received_email(job.employer.email, job.title, current_user.email)
+    return application
 
 
 @router.get("/me/applications", response_model=list[ApplicationRead])
@@ -84,4 +87,6 @@ def update_application_status(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
     if job.employer_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Job owner required")
-    return update_application(db, application, application_in)
+    updated_application = update_application(db, application, application_in)
+    send_application_status_email(application.candidate.email, job.title, updated_application.status.value)
+    return updated_application

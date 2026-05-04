@@ -21,6 +21,13 @@ class Settings(BaseSettings):
     upload_url_prefix: str = "/uploads"
     upload_max_bytes: int = 5 * 1024 * 1024
 
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from_email: str = ""
+    smtp_use_tls: bool = True
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
