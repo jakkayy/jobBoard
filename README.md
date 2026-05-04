@@ -53,6 +53,31 @@ Start local infrastructure.
 docker compose up -d postgres redis
 ```
 
+Create and activate a Python virtual environment for the backend.
+
+```bash
+python3 -m venv backend/.venv
+source backend/.venv/bin/activate
+```
+
+Install backend dependencies.
+
+```bash
+pip install -e "backend[dev]"
+```
+
+Run the backend API.
+
+```bash
+uvicorn app.main:app --reload --app-dir backend
+```
+
+Open the backend health check.
+
+```bash
+curl http://localhost:8000/api/v1/health
+```
+
 Check running services.
 
 ```bash
