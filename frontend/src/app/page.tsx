@@ -1,3 +1,5 @@
+import { NavAuthButton } from "@/components/nav-auth-button";
+
 const stats = [
   { label: "Open roles", value: "1,200+" },
   { label: "Companies", value: "350+" },
@@ -21,12 +23,7 @@ export default function HomePage() {
             <a href="#jobs">Jobs</a>
             <a href="#contact">Contact</a>
           </div>
-          <a
-            href="/login"
-            className="rounded-full bg-slate-950 px-5 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
-          >
-            Sign in
-          </a>
+          <NavAuthButton />
         </nav>
 
         <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">

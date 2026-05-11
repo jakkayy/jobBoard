@@ -35,7 +35,8 @@ export default function RegisterPage() {
       await registerUser({ email, password, role });
       const token = await loginUser({ email, password });
       storeToken(token.access_token);
-      router.push("/");
+      const dest = role === "employer" ? "/employer/dashboard" : role === "admin" ? "/admin" : "/candidate/dashboard";
+      router.push(dest);
     } catch {
       setError("Could not create account. Please check your details and try again.");
     } finally {

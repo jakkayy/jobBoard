@@ -8,11 +8,15 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-jobboard}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jobboard}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-jobboard} -d ${POSTGRES_DB:-jobboard}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-jobboard} -d ${POSTGRES_DB:-jobboard}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5

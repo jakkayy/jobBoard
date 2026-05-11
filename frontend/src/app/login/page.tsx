@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { AuthCard } from "@/components/auth/auth-card";
-import { loginUser } from "@/lib/auth-api";
+import { getCurrentUser, loginUser } from "@/lib/auth-api";
 import { storeToken } from "@/lib/auth-token";
 
 export default function LoginPage() {
@@ -27,7 +27,9 @@ export default function LoginPage() {
     try {
       const token = await loginUser({ email, password });
       storeToken(token.access_token);
-      router.push("/");
+      const user = await getCurrentUser(token.access_token);
+      const dest = user.role === "employer" ? "/employer/dashboard" : user.role === "admin" ? "/admin" : "/candidate/dashboard";
+      router.push(dest);
     } catch {
       setError("Invalid email or password.");
     } finally {
