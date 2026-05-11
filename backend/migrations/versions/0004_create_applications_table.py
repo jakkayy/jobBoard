@@ -9,17 +9,16 @@ from collections.abc import Sequence
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects.postgresql import ENUM as PgEnum
 
 revision: str = "0004_create_applications_table"
 down_revision: str | None = "0003_create_jobs_table"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
-application_status = sa.Enum("pending", "reviewing", "accepted", "rejected", name="applicationstatus")
-
 
 def upgrade() -> None:
-    application_status.create(op.get_bind(), checkfirst=True)
+    op.execute(sa.text("DO $$ BEGIN CREATE TYPE applicationstatus AS ENUM ('pending', 'reviewing', 'accepted', 'rejected'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;"))
 
     op.create_table(
         "applications",
@@ -28,7 +27,7 @@ def upgrade() -> None:
         sa.Column("candidate_id", sa.Integer(), nullable=False),
         sa.Column("cover_letter", sa.Text(), nullable=True),
         sa.Column("cv_url", sa.String(length=500), nullable=True),
-        sa.Column("status", application_status, nullable=False),
+        sa.Column("status", PgEnum(name="applicationstatus", create_type=False), nullable=False),
         sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
         sa.ForeignKeyConstraint(["candidate_id"], ["users.id"], ondelete="CASCADE"),
@@ -46,5 +45,4 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_applications_id"), table_name="applications")
     op.drop_index(op.f("ix_applications_candidate_id"), table_name="applications")
     op.drop_table("applications")
-
-    application_status.drop(op.get_bind(), checkfirst=True)
+    op.execute(sa.text("DROP TYPE IF EXISTS applicationstatus"))

@@ -1,6 +1,10 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Always load .env from the project root regardless of working directory
+_ENV_FILE = Path(__file__).resolve().parents[3] / ".env"
 
 
 class Settings(BaseSettings):
@@ -10,7 +14,7 @@ class Settings(BaseSettings):
 
     backend_cors_origins: str = "http://localhost:3000"
 
-    database_url: str = "postgresql+psycopg://jobboard:jobboard@localhost:5432/jobboard"
+    database_url: str = "postgresql+psycopg://jobboard:jobboard@localhost:5433/jobboard"
     redis_url: str = "redis://localhost:6379/0"
 
     jwt_secret: str = "change-me"
@@ -29,7 +33,7 @@ class Settings(BaseSettings):
     smtp_use_tls: bool = True
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=str(_ENV_FILE),
         env_file_encoding="utf-8",
         extra="ignore",
     )

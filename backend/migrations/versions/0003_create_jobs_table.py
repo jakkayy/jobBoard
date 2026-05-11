@@ -9,21 +9,17 @@ from collections.abc import Sequence
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects.postgresql import ENUM as PgEnum
 
 revision: str = "0003_create_jobs_table"
 down_revision: str | None = "0002_create_profile_tables"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
-employment_type = sa.Enum(
-    "full_time", "part_time", "contract", "freelance", "internship", name="employmenttype"
-)
-job_status = sa.Enum("draft", "published", "closed", name="jobstatus")
-
 
 def upgrade() -> None:
-    employment_type.create(op.get_bind(), checkfirst=True)
-    job_status.create(op.get_bind(), checkfirst=True)
+    op.execute(sa.text("DO $$ BEGIN CREATE TYPE employmenttype AS ENUM ('full_time', 'part_time', 'contract', 'freelance', 'internship'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;"))
+    op.execute(sa.text("DO $$ BEGIN CREATE TYPE jobstatus AS ENUM ('draft', 'published', 'closed'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;"))
 
     op.create_table(
         "jobs",
@@ -32,11 +28,11 @@ def upgrade() -> None:
         sa.Column("title", sa.String(length=255), nullable=False),
         sa.Column("description", sa.Text(), nullable=False),
         sa.Column("location", sa.String(length=255), nullable=True),
-        sa.Column("employment_type", employment_type, nullable=False),
+        sa.Column("employment_type", PgEnum(name="employmenttype", create_type=False), nullable=False),
         sa.Column("salary_min", sa.Integer(), nullable=True),
         sa.Column("salary_max", sa.Integer(), nullable=True),
         sa.Column("skills_required", sa.Text(), nullable=True),
-        sa.Column("status", job_status, nullable=False),
+        sa.Column("status", PgEnum(name="jobstatus", create_type=False), nullable=False),
         sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
         sa.ForeignKeyConstraint(["employer_id"], ["users.id"], ondelete="CASCADE"),
@@ -54,6 +50,5 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_jobs_id"), table_name="jobs")
     op.drop_index(op.f("ix_jobs_employer_id"), table_name="jobs")
     op.drop_table("jobs")
-
-    job_status.drop(op.get_bind(), checkfirst=True)
-    employment_type.drop(op.get_bind(), checkfirst=True)
+    op.execute(sa.text("DROP TYPE IF EXISTS jobstatus"))
+    op.execute(sa.text("DROP TYPE IF EXISTS employmenttype"))
