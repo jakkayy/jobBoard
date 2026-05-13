@@ -1,10 +1,12 @@
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Always load .env from the project root regardless of working directory
 _ENV_FILE = Path(__file__).resolve().parents[3] / ".env"
+_PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 class Settings(BaseSettings):
@@ -38,9 +40,27 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    @model_validator(mode="after")
+    def validate_production(self) -> "Settings":
+        if self.app_env == "production":
+            if self.jwt_secret == "change-me":
+                raise ValueError("JWT_SECRET must be changed from the default value in production")
+            if len(self.jwt_secret) < 32:
+                raise ValueError("JWT_SECRET must be at least 32 characters in production")
+        return self
+
+    @property
+    def is_production(self) -> bool:
+        return self.app_env == "production"
+
     @property
     def cors_origins(self) -> list[str]:
         return [origin.strip() for origin in self.backend_cors_origins.split(",") if origin.strip()]
+
+    @property
+    def upload_dir_absolute(self) -> Path:
+        path = Path(self.upload_dir)
+        return path if path.is_absolute() else _PROJECT_ROOT / path
 
 
 @lru_cache

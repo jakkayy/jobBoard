@@ -6,6 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.api.deps import CurrentUser, DbSession
 from app.core.security import create_access_token, verify_password
 from app.crud.user import create_user, get_user_by_email
+from app.models.user import UserRole
 from app.schemas.token import Token
 from app.schemas.user import UserCreate, UserRead
 
@@ -14,6 +15,8 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 def register(user_in: UserCreate, db: DbSession) -> UserRead:
+    if user_in.role == UserRole.admin:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot register as admin")
     existing_user = get_user_by_email(db, str(user_in.email))
     if existing_user is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")

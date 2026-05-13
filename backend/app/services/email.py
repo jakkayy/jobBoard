@@ -1,13 +1,16 @@
+import logging
 import smtplib
 from email.message import EmailMessage
 
 from app.core.config import get_settings
 
+logger = logging.getLogger(__name__)
+
 
 def send_email(to_email: str, subject: str, body: str) -> None:
     settings = get_settings()
     if not settings.smtp_host or not settings.smtp_from_email:
-        print(f"Email notification skipped: to={to_email} subject={subject}")
+        logger.info("Email skipped (SMTP not configured): to=%s subject=%s", to_email, subject)
         return
 
     message = EmailMessage()
@@ -16,12 +19,15 @@ def send_email(to_email: str, subject: str, body: str) -> None:
     message["Subject"] = subject
     message.set_content(body)
 
-    with smtplib.SMTP(settings.smtp_host, settings.smtp_port) as server:
-        if settings.smtp_use_tls:
-            server.starttls()
-        if settings.smtp_user and settings.smtp_password:
-            server.login(settings.smtp_user, settings.smtp_password)
-        server.send_message(message)
+    try:
+        with smtplib.SMTP(settings.smtp_host, settings.smtp_port) as server:
+            if settings.smtp_use_tls:
+                server.starttls()
+            if settings.smtp_user and settings.smtp_password:
+                server.login(settings.smtp_user, settings.smtp_password)
+            server.send_message(message)
+    except Exception:
+        logger.exception("Failed to send email to %s (subject: %s)", to_email, subject)
 
 
 def send_application_received_email(to_email: str, job_title: str, candidate_email: str) -> None:

@@ -7,12 +7,12 @@ from app.models.job import EmploymentType, JobStatus
 
 class JobBase(BaseModel):
     title: str = Field(min_length=1, max_length=255)
-    description: str = Field(min_length=1)
+    description: str = Field(min_length=1, max_length=10000)
     location: str | None = Field(default=None, max_length=255)
     employment_type: EmploymentType
     salary_min: int | None = Field(default=None, ge=0)
     salary_max: int | None = Field(default=None, ge=0)
-    skills_required: str | None = None
+    skills_required: str | None = Field(default=None, max_length=2000)
     status: JobStatus = JobStatus.draft
 
     @model_validator(mode="after")
@@ -29,12 +29,12 @@ class JobCreate(JobBase):
 
 class JobUpdate(BaseModel):
     title: str | None = Field(default=None, min_length=1, max_length=255)
-    description: str | None = Field(default=None, min_length=1)
+    description: str | None = Field(default=None, min_length=1, max_length=10000)
     location: str | None = Field(default=None, max_length=255)
     employment_type: EmploymentType | None = None
     salary_min: int | None = Field(default=None, ge=0)
     salary_max: int | None = Field(default=None, ge=0)
-    skills_required: str | None = None
+    skills_required: str | None = Field(default=None, max_length=2000)
     status: JobStatus | None = None
 
     @model_validator(mode="after")

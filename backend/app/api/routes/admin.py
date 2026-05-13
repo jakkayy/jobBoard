@@ -7,7 +7,7 @@ from app.crud.user import count_users, get_user_by_id, get_users, update_user
 from app.models.user import UserRole
 from app.schemas.admin import AdminApplicationList, AdminJobList, AdminUserList
 from app.schemas.job import JobRead, JobUpdate
-from app.schemas.user import UserRead, UserUpdate
+from app.schemas.user import AdminUserUpdate, UserRead
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -31,7 +31,7 @@ def list_users(
 @router.patch("/users/{user_id}", response_model=UserRead)
 def update_user_status(
     user_id: int,
-    user_in: UserUpdate,
+    user_in: AdminUserUpdate,
     current_user: CurrentUser,
     db: DbSession,
 ) -> UserRead:

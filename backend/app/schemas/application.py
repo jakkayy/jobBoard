@@ -6,7 +6,7 @@ from app.models.application import ApplicationStatus
 
 
 class ApplicationCreate(BaseModel):
-    cover_letter: str | None = None
+    cover_letter: str | None = Field(default=None, max_length=5000)
     cv_url: HttpUrl | None = None
 
 
